@@ -3,7 +3,6 @@ from fakts import Fakts
 from dask.distributed import Client, Security
 from dask_gateway import Gateway, BasicAuth, GatewayCluster
 from dask_gateway.auth import GatewayAuth
-from herre.herre import get_current_herre
 from typing import Callable, Awaitable, TypeVar
 import contextvars
 

@@ -1,10 +1,10 @@
-from rath.scalars import ID
 from typing_extensions import Literal
 from typing import Optional, List, Tuple
-from pydantic import BaseModel, Field
-from kluster.funcs import aexecute, execute
-from enum import Enum
+from rath.scalars import ID
+from kluster.funcs import execute, aexecute
+from pydantic import Field, BaseModel
 from kluster.traits import DaskClientBearer
+from enum import Enum
 from kluster.rath import KlusterRath
 
 
@@ -249,7 +249,7 @@ async def asearch_dask_cluster(
         await aexecute(
             SearchDaskClusterQuery, {"search": search, "values": values}, rath=rath
         )
-    ).dask_clusters
+    ).options
 
 
 def search_dask_cluster(
@@ -272,4 +272,4 @@ def search_dask_cluster(
         List[SearchDaskClusterQueryDaskclusters]"""
     return execute(
         SearchDaskClusterQuery, {"search": search, "values": values}, rath=rath
-    ).dask_clusters
+    ).options

@@ -4,13 +4,14 @@ from koil.composition import Composition
 from rath.links.auth import ComposedAuthLink
 from rath.links.aiohttp import AIOHttpLink
 from rath.links.graphql_ws import GraphQLWSLink
-from omero_ark.omero_ark import OmeroArk
-from omero_ark.rath import (
-    OmeroArkRath,
+from kluster.kluster import Kluster
+from kluster.rath import (
+    KlusterRath,
     SplitLink,
-    OmeroArkRathLinkComposition,
+    KlusterRathLinkComposition,
 )
-from rath.operation import OperationType
+from kluster.repository import Repository
+from graphql import OperationType
 
 test_path = os.path.join(os.path.dirname(__file__), "deployments", "test")
 
@@ -18,7 +19,7 @@ test_path = os.path.join(os.path.dirname(__file__), "deployments", "test")
 def build_deployment() -> Deployment:
     setup = mirror(test_path)
     setup.add_health_check(
-        url="http://localhost:7755/graphql", service="omero_ark", timeout=5, max_retries=10
+        url="http://localhost:7766/graphql", service="kluster", timeout=5, max_retries=10
     )
     return setup
 
@@ -28,35 +29,42 @@ async def token_loader():
     return "demo"
 
 
-def build_deployed_omero_ark() -> OmeroArk:
+def build_deployed_kluster() -> Kluster:
 
-    y = OmeroArkRath(
-        link=OmeroArkRathLinkComposition(
+    repo = Repository(
+        endpoint="http://localhost:7744",
+        token_loader=token_loader,
+        token_refresher=token_loader,
+    )
+
+    y = KlusterRath(
+        link=KlusterRathLinkComposition(
             auth=ComposedAuthLink(
                 token_loader=token_loader,
                 token_refresher=token_loader,
             ),
             split=SplitLink(
-                left=AIOHttpLink(endpoint_url="http://localhost:7755/graphql"),
-                right=GraphQLWSLink(ws_endpoint_url="ws://localhost:7755/graphql"),
+                left=AIOHttpLink(endpoint_url="http://localhost:7766/graphql"),
+                right=GraphQLWSLink(ws_endpoint_url="ws://localhost:7766/graphql"),
                 split=lambda o: o.node.operation != OperationType.SUBSCRIPTION,
             ),
         ),
     )
 
-    omero_ark = OmeroArk(
+    omero_ark = Kluster(
         rath=y,
+        repo=repo
     )
     return omero_ark
 
 
-class DeployedOmeroArk(Composition):
+class DeployedKluster(Composition):
     """ A deployed omero_ark"""
     deployment: Deployment
-    omero_ark: OmeroArk
+    kluster: Kluster
 
 
-def deployed() -> DeployedOmeroArk:
+def deployed() -> DeployedKluster:
     """Create a deployed omero_ark
 
     A deployed omero_ark is a composition of a deployment and a omero_ark.
@@ -72,7 +80,7 @@ def deployed() -> DeployedOmeroArk:
     DeployedOmeroArk
         _description_
     """
-    return DeployedOmeroArk(
+    return DeployedKluster(
         deployment=build_deployment(),
-        omero_ark=build_deployed_omero_ark(),
+        kluster=build_deployed_kluster(),
     )

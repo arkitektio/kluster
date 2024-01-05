@@ -1,5 +1,17 @@
 # Kluster
 
+[![codecov](https://codecov.io/gh/jhnnsrs/kluster/branch/master/graph/badge.svg?token=UGXEA2THBV)](https://codecov.io/gh/jhnnsrs/kluster)
+[![PyPI version](https://badge.fury.io/py/kluster.svg)](https://pypi.org/project/kluster/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://pypi.org/project/kluster/)
+![Maintainer](https://img.shields.io/badge/maintainer-jhnnsrs-blue)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/kluster.svg)](https://pypi.python.org/pypi/kluster/)
+[![PyPI status](https://img.shields.io/pypi/status/kluster.svg)](https://pypi.python.org/pypi/kluster/)
+[![PyPI download month](https://img.shields.io/pypi/dm/kluster.svg)](https://pypi.python.org/pypi/kluster/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/jhnnsrs/kluster)
+
+
 ## Description
 
 Kluster is a simple, lightweight, and easy to use dask-cluster management tool. It combines the efforts of

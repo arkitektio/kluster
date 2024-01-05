@@ -1,14 +1,16 @@
+from pydantic import BaseModel, Field
 from typing_extensions import Literal
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
 from rath.scalars import ID
-from kluster.funcs import execute, aexecute
-from pydantic import Field, BaseModel
-from kluster.traits import DaskClientBearer
-from enum import Enum
 from kluster.rath import KlusterRath
+from kluster.traits import DaskClientBearer
+from kluster.funcs import execute, aexecute
+from enum import Enum
 
 
 class DaskClusterState(str, Enum):
+    """The state of a dask cluster"""
+
     PENDING = "PENDING"
     RUNNING = "RUNNING"
     STOPPING = "STOPPING"
@@ -17,10 +19,14 @@ class DaskClusterState(str, Enum):
 
 
 class ClusterFilter(BaseModel):
+    """Filter for Dask Clusters"""
+
     ids: Optional[Tuple[ID, ...]]
     search: Optional[str]
 
     class Config:
+        """A config class"""
+
         frozen = True
         extra = "forbid"
         use_enum_values = True
@@ -31,15 +37,21 @@ class OffsetPaginationInput(BaseModel):
     limit: int
 
     class Config:
+        """A config class"""
+
         frozen = True
         extra = "forbid"
         use_enum_values = True
 
 
 class CreateClusterInput(BaseModel):
+    """Create a dask cluster input"""
+
     name: str
 
     class Config:
+        """A config class"""
+
         frozen = True
         extra = "forbid"
         use_enum_values = True
@@ -53,24 +65,35 @@ class DaskClusterFragmentSecurity(BaseModel):
     tls_key: str = Field(alias="tlsKey")
 
     class Config:
+        """A config class"""
+
         frozen = True
 
 
 class DaskClusterFragment(DaskClientBearer, BaseModel):
     typename: Optional[Literal["DaskCluster"]] = Field(alias="__typename", exclude=True)
     id: ID
+    "The id of the dask cluster"
     name: str
+    "The name of the dask cluster"
     dashboard_link: str = Field(alias="dashboardLink")
+    "A link to the dashboard for the dask cluster. Relative to the proxy."
     status: DaskClusterState
+    "The status of the dask cluster"
     scheduler_address: str = Field(alias="schedulerAddress")
+    "A link to the scheduler for the dask cluster. Relative to the proxy."
     security: Optional[DaskClusterFragmentSecurity]
+    "The user who created the dask cluster"
 
     class Config:
+        """A config class"""
+
         frozen = True
 
 
 class CreateDaskClusterMutation(BaseModel):
     create_dask_cluster: DaskClusterFragment = Field(alias="createDaskCluster")
+    "Create a new dask cluster on a bridge server"
 
     class Arguments(BaseModel):
         name: str
@@ -81,6 +104,7 @@ class CreateDaskClusterMutation(BaseModel):
 
 class ListDaskClustersQuery(BaseModel):
     dask_clusters: Tuple[DaskClusterFragment, ...] = Field(alias="daskClusters")
+    "Return all dask clusters"
 
     class Arguments(BaseModel):
         pass
@@ -91,6 +115,7 @@ class ListDaskClustersQuery(BaseModel):
 
 class GetDaskClusterQuery(BaseModel):
     dask_cluster: DaskClusterFragment = Field(alias="daskCluster")
+    "Return a dask cluster by id"
 
     class Arguments(BaseModel):
         id: ID
@@ -104,14 +129,19 @@ class SearchDaskClusterQueryOptions(DaskClientBearer, BaseModel):
 
     typename: Optional[Literal["DaskCluster"]] = Field(alias="__typename", exclude=True)
     value: ID
+    "The id of the dask cluster"
     label: str
+    "The name of the dask cluster"
 
     class Config:
+        """A config class"""
+
         frozen = True
 
 
 class SearchDaskClusterQuery(BaseModel):
     options: Tuple[SearchDaskClusterQueryOptions, ...]
+    "Return all dask clusters"
 
     class Arguments(BaseModel):
         search: Optional[str] = Field(default=None)

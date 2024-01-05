@@ -1,4 +1,6 @@
-from dokker import mirror,  Deployment
+""" A deployed kluster instance package"""
+
+from dokker import mirror, Deployment
 import os
 from koil.composition import Composition
 from rath.links.auth import ComposedAuthLink
@@ -17,20 +19,40 @@ test_path = os.path.join(os.path.dirname(__file__), "deployments", "test")
 
 
 def build_deployment() -> Deployment:
+    """Builds a deploymen of kluster for testing
+
+    This will return a deployment of kluster that is ready to be used for testing.
+    It will have a health check that will check the graphql endpoint.
+
+    Returns
+    -------
+    Deployment
+        The deployment of kluster (dokker.Deployment)
+
+
+    """
     setup = mirror(test_path)
     setup.add_health_check(
-        url="http://localhost:7766/graphql", service="kluster", timeout=5, max_retries=10
+        url="http://localhost:7766/graphql",
+        service="kluster",
+        timeout=5,
+        max_retries=10,
     )
     return setup
 
 
-async def token_loader():
-    """ Returns a token as defined in the static_token setting for omero_ark"""
+async def token_loader() -> str:
+    """Returns a token as defined in the static_token setting for kluster"""
     return "demo"
 
 
 def build_deployed_kluster() -> Kluster:
+    """Build a client for a  deployed kluster instance
 
+    This will return a client for a deployed kluster instance. It will use the
+    static_token setting for authentication.
+
+    """
     repo = Repository(
         endpoint="http://localhost:7744",
         token_loader=token_loader,
@@ -51,34 +73,41 @@ def build_deployed_kluster() -> Kluster:
         ),
     )
 
-    omero_ark = Kluster(
-        rath=y,
-        repo=repo
-    )
+    omero_ark = Kluster(rath=y, repo=repo)
     return omero_ark
 
 
 class DeployedKluster(Composition):
-    """ A deployed omero_ark"""
+    """A deployed kluster instance
+
+    THis is a composition of both a deployment of kluster-server
+    (and kluster-gateway) and a client for that deployment. It is
+    the fastest way to get a fully functioning kluster instance,
+    ready for testing.
+
+
+    """
+
     deployment: Deployment
     kluster: Kluster
 
 
 def deployed() -> DeployedKluster:
-    """Create a deployed omero_ark
+    """Create a deployed kluster
 
-    A deployed omero_ark is a composition of a deployment and a omero_ark.
-    This means a fully functioning omero instance will be spun up when
+    A deployed kluster is a composition of a deployment of the
+    kluster server and a kluster client.
+    This means a fully functioning kluster instance will be spun up when
     the context manager is entered.
 
     To inspect the deployment, use the `deployment` attribute.
-    To interact with the omero_ark, use the `omero_ark` attribute.
+    To interact with the kluster, use the `kluster` attribute.
 
 
     Returns
     -------
-    DeployedOmeroArk
-        _description_
+    DeployedKluster
+        The deployed kluster instance (Composition)
     """
     return DeployedKluster(
         deployment=build_deployment(),

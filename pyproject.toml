@@ -7,16 +7,17 @@ license = "CC BY-NC 3.0"
 packages = [{ include = "kluster" }]
 
 [tool.poetry.dependencies]
-python = "^3.8, <=3.12"
+python = "^3.9, <=3.12"
 rath = ">=0.5.0"
 dokker = ">=0.1.19"
+dask-gateway = "^2023.9.0"
 
 [tool.poetry.extras]
 turms = ["turms"]
 
 
 [tool.mypy]
-exclude = ["venv/"]
+exclude = ["venv/","kluster/api", "tests"]
 ignore_missing_imports = true
 
 
@@ -46,6 +47,8 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "kluster/api",
+    "tests"
 ]
 
 # Same as Black.

@@ -1,18 +1,18 @@
+""" The Kluster (Client) Composition packages"""
 from koil.composition import Composition
 from .rath import KlusterRath
 from .repository import Repository
 
 
 class Kluster(Composition):
-    """The Mikro Composition
+    """The KLuseter (Client) Composition
 
-    This composition provides a datalayer and a omero_ark for interacting with the
-    mikro api and beyond
+    This composition is the main entry point for the kluster client.
+    and is used to build a client for a kluster instance, that can be
+    used to execute graphql operations and retrieve the dask client
+    from a connected dask gateway trough the repository.
 
     """
 
     rath: KlusterRath
     repo: Repository
-
-    def _repr_html_inline_(self):
-        return f"<table><td>rath</td><td>{self.rath._repr_html_inline_()}</td></tr></table>"

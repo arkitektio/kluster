@@ -1,3 +1,5 @@
+""" Arkitekt Kluster Builder"""
+
 from arkitekt.healthz import FaktsHealthz
 from rath.contrib.fakts.links.aiohttp import FaktsAIOHttpLink
 from rath.links.split import SplitLink
@@ -12,6 +14,9 @@ from kluster.contrib.arkitekt_repository import ArkitektRepository
 
 
 class ArkitektKluster(Kluster):
+    """A composition of Kluster as it
+    relates to the Arkitekt project"""
+
     rath: KlusterRath
     repo: ArkitektRepository
     healthz: FaktsHealthz
@@ -20,6 +25,7 @@ class ArkitektKluster(Kluster):
 def build_arkitekt_kluster(
     fakts: Fakts, herre: Herre, fakts_group: str = "kluster"
 ) -> KlusterRath:
+    """Builds a KlusterRath for use with the Arkitekt project"""
     repo = ArkitektRepository(
         fakts=fakts,
         herre=herre,

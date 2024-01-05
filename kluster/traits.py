@@ -15,8 +15,7 @@ If you want to add your own traits to the graphql type, you can do so by adding 
 from pydantic import BaseModel
 from typing import TYPE_CHECKING
 from rath.turms.utils import get_attributes_or_error
-from dask.distributed import Client
-from dask_gateway import Gateway, GatewayCluster
+from dask_gateway import GatewayCluster
 from .repository import get_current_repository
 from koil import unkoil
 import webbrowser
@@ -26,37 +25,71 @@ if TYPE_CHECKING:
 
 
 class DaskClientBearer(BaseModel):
-    """Representation Trait
+    """Client Bearer Trait
 
     Implements both identifier and shrinking methods.
     Also Implements the data attribute
 
-    Attributes:
-        data (xarray.Dataset): The data of the representation.
 
     """
 
     async def aget_gateway(self, asynchronous: bool = False) -> GatewayCluster:
         """Get the dask client for the representation.
 
-        Returns:
-            Client: The dask client for the representation.
+        This is a synchronous version of the aget_gateway method.
+
+        Usage:
+            >>> gateway = cluster.get_gateway()
+            >>> gateway.get_client()
+
+        Parameters
+        ----------
+        asynchronous : bool, optional
+            Whether to create the gateway asynchronously, by default False
+
+
+        Returns
+        -------
+        cluster: GatewayCluster
+                The dask gateway for the representation.
         """
-        return await get_current_repository().aget_client_for_cluster(
-            self.id, asynchronous=asynchronous
+
+        id = get_attributes_or_error(self, "id")
+
+        return await get_current_repository().aget_gatewayfor_cluster(
+            id, asynchronous=asynchronous
         )
 
-    async def aget_dashboard_url(self) -> Client:
+    async def aget_dashboard_url(self) -> str:
         """Get the dask client for the representation.
 
         Returns:
             Client: The dask client for the representation.
         """
-        return await get_current_repository().aget_dashboard_url(self.dashboard_link)
+        dashboard_link = get_attributes_or_error(self, "dashboard_link")
+
+        return await get_current_repository().aget_dashboard_url(dashboard_link)
 
     def get_gateway(self) -> GatewayCluster:
+        """Get the dask client for the representation.
+
+        This is a synchronous version of the aget_gateway method.
+
+        Usage:
+            >>> gateway = cluster.get_gateway()
+            >>> gateway.get_client()
+
+
+        Returns
+        -------
+        cluster: GatewayCluster
+                The dask gateway for the representation.
+        """
+
         return unkoil(self.aget_gateway)
 
     def open_dashboard(self) -> str:
+        """Get the dask client for the representation."""
         absolute_url = unkoil(self.aget_dashboard_url)
         webbrowser.open(absolute_url)
+        return absolute_url

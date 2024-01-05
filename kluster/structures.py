@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 try:
-    import rekuest
     from rekuest.structures.default import (
         get_default_structure_registry,
         Scope,
@@ -39,4 +38,5 @@ try:
 
 
 except ImportError:
+    structure_reg = None
     pass

@@ -9,7 +9,7 @@ packages = [{ include = "kluster" }]
 [tool.poetry.dependencies]
 python = "^3.9"
 rath = ">=0.5.0"
-dokker = ">=0.1.22"
+dokker = ">=0.1.23"
 dask-gateway = "^2023.9.0"
 
 [tool.poetry.extras]

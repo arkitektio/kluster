@@ -571,14 +571,14 @@ zict = ">=3.0.0"
 
 [[package]]
 name = "dokker"
-version = "0.1.22"
+version = "0.1.23"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "dokker-0.1.22-py3-none-any.whl", hash = "sha256:70a61e3f68d894033d6ee8fb50431d1f3873774b64d4a19c536acd6175cbea5d"},
-    {file = "dokker-0.1.22.tar.gz", hash = "sha256:42eb37ddf042caf0651580b67169e996c44bb15eab85f0cdaa5e0ca8b46c1453"},
+    {file = "dokker-0.1.23-py3-none-any.whl", hash = "sha256:bcc053e057c6c76513a9adf5f72447edded45ad1343f965b3ff722208325c609"},
+    {file = "dokker-0.1.23.tar.gz", hash = "sha256:61423e80b28261a508bafc20a7655c23fbec2dadb12ebd0e217a97fadd8accbb"},
 ]
 
 [package.dependencies]
@@ -1977,4 +1977,4 @@ turms = []
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "e2ac99a2a8f0b94a52e072da1197a243546a41acc84ad90ffa8bd6782e4cc360"
+content-hash = "53e5667a655c02c2aa27d69982987276a6c67f9384d17bde88842894af7dcbf0"

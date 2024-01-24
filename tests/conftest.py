@@ -19,7 +19,6 @@ def deployed_app() -> Iterator[DeployedKluster]:
         app.deployment.wait_for_healthz()
         logging.warning("Deployment is healthy")
 
-
         yield app
 
         logging.warning("Tearing down Deployment")

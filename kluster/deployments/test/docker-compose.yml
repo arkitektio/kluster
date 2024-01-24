@@ -25,7 +25,7 @@ services:
     - kluster_gateway
     - redis
     - db
-    image: jhnnsrs/kluster:paper
+    image: jhnnsrs/kluster:latest
     command: bash run-debug.sh
     ports:
       - 7766:80

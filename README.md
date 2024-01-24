@@ -1,6 +1,6 @@
 # Kluster
 
-[![codecov](https://codecov.io/gh/jhnnsrs/kluster/branch/master/graph/badge.svg?token=UGXEA2THBV)](https://codecov.io/gh/jhnnsrs/kluster)
+[![codecov](https://codecov.io/gh/jhnnsrs/kluster/branch/main/graph/badge.svg?token=UGXEA2THBV)](https://codecov.io/gh/jhnnsrs/kluster)
 [![PyPI version](https://badge.fury.io/py/kluster.svg)](https://pypi.org/project/kluster/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://pypi.org/project/kluster/)
 ![Maintainer](https://img.shields.io/badge/maintainer-jhnnsrs-blue)
